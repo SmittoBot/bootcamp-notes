@@ -35,4 +35,38 @@ create-react-app jsx
 * node_modules: folder that contains all of our project dependencies
 * package.json: records our project dependencies and configures our project
 * package-lock.json: records the exact version of packages that we install
+* Start in terminal with `npm start`, stop with `Control+C`, once started can visit at `localhost:3000`
+* Importing a dependency: `import React from 'react'`
+* When we use an import statement, it uses a module system called ES2015 Modules, if we use the CommonJS modules, we make use of the require statement such as `const React = require('react')`
+* A component is a function or class that produces HTML to show the user, and handle feedback from the user
+* ES2015 arrow function: `function() {` can also be `() => {`
+* By convention, we take our component and render it inside of the div with id root in the `index.html` file
+
+### Building Content with JSX
+* No browser natively understands what JSX is, it first gets converted into equivalent JS code
+* Babel homepage: babeljs.io, can look at code converted into ES5 JS, converts returns to `React.createElement` for each element
+* When returning JSX with a react component, can't just place opening tag on the next line, must wrap in parentheses:
+```
+return (
+  <div>
+  </div>
+);
+```
+* JSX vs HTML
+  * Adding custom styling to an element differs: 
+    * HTML: `<div style="background-color: red':></div>`
+    * JSX: `<div style={{backgroundColor:'red'}}></div>`, represents properties with a JS object
+  * With compound property names, remove the dashes and instead use camelCase
+  * Adding a class to an element uses different syntax:
+    * use className instead of class
+    * Ex: `<label className="label">`, avoids collisions with the class keyword from `class App extends React.Component`
+    * Note: Objects are not valid as a React child, cannot print JS objects as text
+  * JSX can easily reference JS variables:
+    * Use `{buttonText}` syntax to reference JS variables inside JSX, can also call functions like `{getButtonText()}`
+* Convention: with JSX, use "" whenever you want to indicate a string, but for any non-JSX property make use of ''
+* More differences between JSX and HTML that you can find by checking your console for warnings
+
+### Communicating with Props
+
+  
 
