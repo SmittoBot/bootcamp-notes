@@ -67,6 +67,28 @@ return (
 * More differences between JSX and HTML that you can find by checking your console for warnings
 
 ### Communicating with Props
-
-  
-
+* Component Nesting: a component can be shown inside of another
+* Component Reusabilit: want to make components that can be easily reused throughout application
+* Component Configuration: should be able to configure a component when it is created
+* Semantic-UI: CSS framework similar to Bootstrap, quick and simple styling for general use
+* faker.js: Package for generating fake data, great for new app testing
+* To import code from an external package:
+```
+import faker from 'faker';
+```
+* Creating a Reusable, Configurable Component:
+  * Identify the JSX that appears to be duplicated, tink of a descriptive name for what it does
+  * Create a new file to house this new component - it should have the same name as the component
+  * Create a new component in the new file, paste the JSX into it
+  * Make the new component configurable by using React's `props` system
+* React components are traditionally written in upper-case and camel cased, like `CommentDetail`
+* The export statement we place in a component file makes is accessible to every other file in the project
+```
+export default CommentDetail;
+```
+* Webpack automaticaly tries to find files with `.js` ending when importing, so just need to import from `./CommentDetail`
+* If we want to show one component inside of another, we treat it like a JSX tag, `<CommentDetail />`
+* Props:
+  * System for passing data from a parent component to a child component
+  * Goal is to customize or configure a child component
+ 
