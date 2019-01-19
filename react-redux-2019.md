@@ -91,4 +91,13 @@ export default CommentDetail;
 * Props:
   * System for passing data from a parent component to a child component
   * Goal is to customize or configure a child component
+* Providing props from parent to child:
+```
+<CommentDetail author="Sam />
+```
+* Props are provided by the first argument in the component:
+```
+const CommentDetail = (props) => {
+```
+
  
