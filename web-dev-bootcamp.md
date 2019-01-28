@@ -24,12 +24,32 @@ foundCampground.author.id.equals(req.user._id)
 ```
 res.redirect("back");
 ```
-* To ensure that a current user exists before checking its attributes:
+* To ensure that a current user exists before checking its attributes, or displaying a button only that user can see:
 ```
 if(currentUser && campground.author.id.equals(currentUser._id)
 ```
-Since comments are a nested route, we need to define the id differently, ie
+* Since comments are a nested route, we need to define the id differently, ie
 ```
 campgrounds/:id/comments/:comment_id/edit
 ```
+* For form inputs, can use input with type submit instead of a button, such as:
+```
+<input type="submit" class="btn btn-xs btn-danger" value="Delete">
+```
+* Put middleware in between your route and req/res function when using express router:
+```
+router.put("/:comment_id", checkCommentOwnership, function(req, res){
+```
+* Refactor middleware and move shared methods into a single file, such as `middleware/index.js`
+```
+var middlewareObj = {};
+middlewareObj.checkCampgroundOwnership = function(){...
+module.exports = middlewareObj;
+```
+* Then require the middleware functions in other files with
+```
+var middleware = require("../middleware");
+```
+* If you require a directory, it will automatically require the contents of the `index.js` file in the directory
 
+### YelpCamp: UI Improvements
