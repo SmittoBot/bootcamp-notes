@@ -53,3 +53,34 @@ var middleware = require("../middleware");
 * If you require a directory, it will automatically require the contents of the `index.js` file in the directory
 
 ### YelpCamp: UI Improvements
+* Flash messages: send a message to a user once, delete if refreshing or closed
+* When searching for library tutorials and APIs, make sure to list version to get relevant links
+* Use `connect-flash` package for flash messages:
+```
+flash = require("connect-flash");
+app.use(flash());
+```
+* To send a flash message:
+```
+req.flash("error", "Please Login First!");
+```
+* To refer to the flash message from anywhere in the app:
+```
+res.locals.error = req.flash("error");
+res.locals.success = req.flash("success");
+```
+* Bootstrap component for alerts provides styling and colors for success/info/alert/error
+* In header file:
+```
+<% if(error && error.length > 0){ %>
+  <div class="alert alert-danger" role="alert"><%= error %></div>
+<% end %>
+<% if(success && success.length > 0){ %>
+  <div class="alert alert-success" role="alert"><%= success %></div>
+<% end %>
+```
+* To flash the generated error message from a request:
+```
+req.flash("error", err.message);
+```
+
