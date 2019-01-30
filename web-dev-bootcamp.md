@@ -83,4 +83,15 @@ res.locals.success = req.flash("success");
 ```
 req.flash("error", err.message);
 ```
-
+* nodemon: alternative to running node app.js, listens for any file changes on server, and automatically restarts server when changes are saved:
+```
+nodemon app.js
+```
+* For centering vertically on page, can use view height, set to <50 so content isn't pushed down too far:
+```
+padding-top: 40vh;
+```
+* To add value form inputs:
+```
+<input class="form-control" type="number" name="campground[price]" value="<%= campground.price %>" min="0.01" step="0.01">
+```
