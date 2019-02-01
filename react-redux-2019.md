@@ -99,5 +99,64 @@ export default CommentDetail;
 ```
 const CommentDetail = (props) => {
 ```
+* Component Reuse: modular component pieces to build larger ones, separate a comment card into CommentDetail and ApprovalCard
+* You can pass one component as the child of another:
+```
+<ApprovalCard>
+  <CommentDetail
+    author="Big"
+    timeAgo="Today at 4:20AM"
+    content="Nice blog post"
+    avatar={faker.image.avatar()}
+  />
+</ApprovalCard>
+```
+* When passing in `CommentDetail` as a prop of `ApprovalCard` it is held in props under `children`
+* We can then show this child component in our return, such as:
+```
+<div className="content">
+  {props.children}
+</div>
+```
+* Component is now reusable, and you can pass other things into the component tags:
+```
+<ApprovalCard>
+ <h4>Warning!</h4>
+ Are you sure you want to do this?
+</ApprovalCard>
+```
 
- 
+### Structuring Apps with Class-Based Components 
+* Functional components: good for simple content without a lot of logic behind it
+* Class components: good for just about anything else - complex logic, responding to user inputs, network requests
+* Benefits of class components:
+  * Easier code organization
+  * Can use 'state' (another React system), easier to handle user input
+  * Understands lifecycle events, easier to do things when the app first starts
+* Simple example application: check user's location and time of year, shows if it's cold or hot
+* Automatically set GPS location: In Chrome dev tools, `esc > ... > sensors > geolocation` overrides your location to the selection
+* To make location sharing selectable again on browser, `i > location > ask(default)`
+* Make a request to geolocation, with callbacks for success and failure:
+```
+window.navigator.geolocation.getCurrentPosition(
+  (position) => console.log(position),
+  (err) => console.log(err)
+);
+```
+* Application timeline: 
+  * JS file loaded by browser
+  * App component gets created
+  * We call geolocation service
+  * App returns JSX, gets rendered to page as HTML 
+  * ... 
+  * We get result of geolocation!
+* Getting geolocation result back takes some time
+* We see content appear on the screen far sooner than when we get a result from the geolocation API
+* Want to tell component to rerender itself with new information
+* Rules of Class-based Components:
+  * Must be a Javascript Class
+  * Must extend (subclass) React.Component 
+  * Must define a 'render' method that returns some amount of JSX
+
+### State in React Components
+
