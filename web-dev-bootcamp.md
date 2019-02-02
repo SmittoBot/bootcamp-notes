@@ -95,3 +95,44 @@ padding-top: 40vh;
 ```
 <input class="form-control" type="number" name="campground[price]" value="<%= campground.price %>" min="0.01" step="0.01">
 ```
+
+### Git and Github
+* Version control: can target individual files and folders and save/checkpoint them
+* Github: viewer for git, way to share with other people
+* `git --version` to ensure git is installed and linked
+* `git init`: initialize empty git repository in current folder, adds `.git` file that you can see with `ls -a`, tracks all our changes
+* `git status`: asks for status, shows branch, current commit, untracked/changed files
+* `git add app.js`: add the listed file to be committed
+* `git commit -m "blah"`: commit file changes that have been staged with add
+* `git log`: gives a history or log of all commits made in current repo, opens terminal interface you can exit with q
+* `git checkout commit_string`: checkout to a different commit, detaches head to point to that commit, transports to different point in time
+* `git checkout master` to go back forward to the most recent commit, head no longer detached
+* `git revert --no-commit 0766c053..HEAD`: revert everything from the HEAD back to the specified commit hash
+* Does not delete the commits that existed after your new head, can revert back to that, all is not lost!
+
+### Deploying
+* When you deploy an application, you're running it on someone else's server (or your own) for it to run 24/7
+* When deploying, want to ensure our package.json has all dependencies, as Heroku will run npm install on this json file, we don't actually send the whole node_modules directory over
+* Setting up Heroku for Node.js: https://devcenter.heroku.com/articles/getting-started-with-nodejs#set-up
+* `heroku create`: make space on heroku and generate a URL that's associated with your current git repository
+* Adds a new remove called heroku, can view with `git remote -v`
+* `git push heroku master`: push whatever code you have committed on the master branch to heroku
+* `heroku logs --tail`: check logs in command line for heroku, good for debugging issues that aren't specified on webpage
+* Need to add start script in package.json: `"start": "node app.js"`
+* `heroku run ls`: runs the ls command on the heroku server hosting your project, lets you see files there
+* MongoLab for hosting Mongo database: https://mlab.com/
+* Set up a free Sandbox database here, use generated URL in `mongoose.connect`
+* Good idea to have separate databases: don't want to delete production data when testing before deployment!
+* Want to make use of environment variables, refer to the database with `process.env.databaseURL`
+* Set and view environment variables with the following:
+```
+export DATABASEURL=mongodb://localhost/yelp_camp_v10
+echo $DATABASEURL
+```
+* To set variables on Heroku instance, go to `server > settings > config vars`
+* Can also set through the command line with
+```
+heroku config:set MY_CUSTOM_VALUE=foobar
+```
+* Environment variables are hidden: unexposed to the public when code is pushed to github
+* Universal across many languages and technologies, used in Ruby as `ENV[]`
