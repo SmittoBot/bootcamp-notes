@@ -55,6 +55,89 @@ mylist.extend(['x','y','z'])
 matrix = [[1,2,3],[4,5,6],[7,8,9]]
 first_col = [row[0] for row in matrix]
 ```
+* Dictionaries: Python's version of Hash Tables/Objects in JS, create mappings with key-value pairs
+* Can nest dictionaries, lists etc inside one another, and then call methods on the final assignment
+* Existing elements are mutable, simply add new elements with:
+```
+mystuff['key'] = 'value'
+```
+* Booleans: `True` and `False` or `1` and `0`, need the capital!
+* Tuples: immutable lists, such as `(1,2,3)`, can mix data types, slicing indexing etc are same as lists
+* Sets: unordered collections of unique elements, adding multiple identical elements won't change it
+
+### Control Flow 
+* No type coercion in Python, `1 == "1"` will return false 
+* Logical operators are `and` and `or`
+* Python stresses readability due to white space, not as much `{}`, control flow statements are keyword, statement, and `:`
+```
+if 4<20:
+ print("beast!")
+```
+* Use `elif` and `else` to follow up conditionals:
+```
+if 1>2:
+ print("beast")
+elif 2>3:
+ print("mode")
+else:
+ print("swag")
+```
+* For loops/iterating:
+```
+seq = [1,2,3,4,5,6]
+for item in seq:
+  print(item)
+```
+* Tuple unpacking, iterating through tuples:
+```
+mypairs = [(1,2),(3,4),(5,6)]
+for (tup1,tup2) in mypairs:
+  print(tup1)
+  print(tup2)
+```
+* Use `range` to define starting num, ending num, and step size. Range is a generator (function) that incrementally makes the next element:
+```
+for i in range(0,20,2):
+  print(i)
+```
+* List comprehension:
+```
+x = [1,2,3,4]
+out = [num**2 for num in x]
+```
+
+### Functions 
+* Functions are formatted in snake case, can assign parameters with default values:
+```
+def my_func(param1='default'):
+  """
+  THIS IS THE DOCSTRING
+  """
+  print("My first python function is {a}!).format(a=param1))
+  
+my_func("beast")
+```
+* Python automatically checks for a docstring for the function, and will often display it when autocompleting depending on your IDE
+* Use `type()` keyword to check for the type of the object:
+```
+def add_num(num1,num2):
+  if type(num1) == type(num2) == type(10):
+    return num1+num2 
+  else:
+    return "We need INTS!!"
+```
+* Can use `lambda` expressions for very small functions that don't require permanent declarations:
+```
+mylist = [1,2,3,4,5,6,7,8]
+evens = filter(lambda num: num%2 == 0,mylist)
+print(list(evens))
+```
+* Can use the `in` function to determine if an element is in a list:
+```
+print('x' in [1,2,3])
+```
+
+### Scope 
 
 ## Django
 * Django overview:
