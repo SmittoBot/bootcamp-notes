@@ -138,10 +138,124 @@ print('x' in [1,2,3])
 ```
 
 ### Scope 
+* Python scope follows the LEGB rule:
+  * Local: names assigned in any way within a function, and not declared global in that function
+  * Enclosing Function locals: names in the local scope of any and all enclosing functions, from inner to outer
+  * Global: names assigned at the top-level of a module file, or declared global in a def within the file
+  * Built-in: names preassigned in the built-in names module: open, range, SyntaxError, etc
+* When you redefine `x = 50` in a function, that reassignment is limited to the scope of the function (EFL level)
+
+### Object Oriented Programming
+* In Python, everything is an object, you can check its type with `type(thing)`
+* `__init__` method is called automatically after an object is created, begins with a reference to the instance object, `self`, followed by arguments that are passed:
+```
+class Dog():
+  def __init__(self,breed,name):
+    self.breed = breed
+    self.name = name
+```
+* Class Object Attributes: always the same for any instance of the class, declare before init method
+* Instance attributes are referred to with `self`, while class object attributes are referred to with the class name:
+```
+class Circle():
+  pi = 3.14
+  def __init__(self,radius=1):
+    self.radius = radius  
+
+  def area(self):
+    return self.radius*self.radius*Circle.pi
+```
+* Inheritance: one class can inherit/derive from another class, declared like:
+```
+class Dog(Animal):
+```
+* Special Methods: always denoted with `__` on each side of method name, such as `__str__` for what to return when printing the object
+
+### Errors and Exceptions 
+* Opening files: first argument is file path, second is if reading, writing, or both:
+```
+open("myfile.txt",'r')
+```
+* Error handling follows a try, except sequence:
+```
+try:
+  f = open('simepl.txt','w')
+  f.write("Test writing to file")
+except IOError:
+  print("Error: could not find file or read data!")
+except:
+  print("Error!")
+else:
+  print("Success!")
+  f.close()
+```
+* Can use a `finally` block that prints regardless of if there's an exception at the end of a try/except/finally statement
+
+### Regular Expressions 
+* Allow us to search for patterns in Python strings, imported as `re` 
+* `re.search(pattern,text)`: pass in the pattern you're looking for and the text to parse through, returns match object
+* Match object holds the starting index of where the pattern is found, `match.start()`
+* `re.split(split_term,email))`: used to split a string into a list on a particular pattern, such as `@`
+* `re.findall(match_term,text)`: returns a list of all instances of the match_term in the input string
+* `sd*` represents an s followed by 0 or more d's
+* `sd+` represents an s followed by 1 or more d's
+* `sd?` represents an s followed by 0 or 1 d's
+* `sd{2,3}` represents an s followed by 2 or 3 d's
+* `s[sd]+` represents an s followed by 1 or more s's or one or more d's
+* `[^!.?]+` represents removing instances of !, ., or ?
+* `[a-z]+` and `[A-Z]+` represents sequences of lower case or upper case characters
+* `[r'\d+']` represents a sequence of digits, `[r'\D+']` represents a sequence of non-digits, `\s` is whitespace and `\S` is non-whitespace, `\w` is alphanumeric, `\W` is non-alphanumeric
+
+### Modules and Packages 
+* Can save a file with functions, and reference it as a module with `import file_name`, then call `filename.func_in_module()`
+* This will generate a `_pycache_` folder, as the interpreter compiles code you run to bytecode and stores it there as `pyc` files
+* Can rename a module with `import mymodule as mm`
+* Can import certain functions: `from mymodule import func_in_module`
+* Can import all functions as `from mymodule import *`, this is wasteful and should be avoided!
+
+### Decorators
+* Can get all local variables with the `locals()` call, and all globals with `globals()`
+* Returning functions: can return functions that are defined within the current scope, and can be assigned to variables
+* Can pass a function as an argument, and then call that function:
+```
+def hello():
+  return "Hi Nathan!"
+  
+ def other(func):
+  print("Hello!")
+  print(func())
+```
+* Can replace passing a function into another function with the `@func`:
+```
+def new_decorator(func):
+  def wrap_func():
+    print("CODE HERE BEFORE EXECUTING FUNC")
+    func()
+    print("FUNC() HAS BEEN CALLED")
+  return wrap_func
+
+@new_decorator
+def func_needs_decorator():
+  print("THIS FUNCTION NEEDS A DECORATOR!")
+  
+func_needs_decorator()
+> CODE HERE BEFORE EXECUTING FUNC
+> THIS FUNCTION NEEDS A DECORATOR!
+> FUNC() HAS BEEN CALLED
+```
+
+### Name and Main
+* Sometimes when importing from a module, you would like to know whether a module's function is being used as an import, or if you are using the original `.py` file of that module
+```
+if __name__ == '__main__':
+  print("one.py is being run directly")
+else:
+  print("one.py has been imported")
+```
 
 ## Django
 * Django overview:
   * User requests a URL
   * This goes to `urls.py` file, which calls `views.py` file
   * This calls `models.py`, which interacts with database and feeds back to `views.py`
-  * views.py uses html/css/js templates to fill out view, then sent back to user
+  * views.py uses html/css/js templates to fill out view, then sent back to use
