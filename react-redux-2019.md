@@ -157,6 +157,74 @@ window.navigator.geolocation.getCurrentPosition(
   * Must be a Javascript Class
   * Must extend (subclass) React.Component 
   * Must define a 'render' method that returns some amount of JSX
+```
+class App extends React.Component {
+  render() {
+    return <div>Latirude: </div>
+  }
+}
+```
 
 ### State in React Components
+* Rules of State:
+  * Only usable with class-based components
+  * `State` is a JS object that contains data relevant to a component
+  * Updating `State` on a component casues the component ot (almost) instantly rerender
+  * State must be initialized when a component is created
+  * State can _only_ be updated using the function `setState`
+* `constructor(props)` function specific to JS, will be the first thing called any time an instance of a class is created
+*  Must call `super(props);` first, as `React.Component` has a constructor function of its own that we're overriding, but we want to ensure the parent constructor function gets called
+```
+constructor(props) {
+  super(props);
+  this.state = { lat: null, errorMessage: '' };
+  
+  window.navigator.geolocation.getCurrentPosition(
+    position => {
+      this.setState({ lat: position.coords.latitude });
+    },
+    err => {
+      this.setState({ errorMessage: err.message });
+    }
+  );
+}
+
+render() {
+  return (
+    <div>
+      Latitude: {this.state.lat}
+      Error: {this.state.errorMessage}
+    </div>
+  );
+}
+```
+* NEVER want to do a direct assignment of the State object outside of the initial creation in the constructor
+* JS callbacks mean setState calls in constructor may not occur until some time after
+* Setting state is an additive process; don't need to specify every state variable, only the ones you're changing
+* Can conditionally render content based on the current state, such as checking for an error
+```
+if (this.state.errorMessage && !this.state.lat) { return <div>stuff</div>; }
+```
+
+### Understanding Lifecycle Methods
+* Component Lifecycle Method: function we can optionally define inside our class-based components, will be automatically called by react in certain point in the component's lifecycle (technically constructor/render count)
+* `componentDidMount()` is called directly after our component is rendered onto the screen, good place to do data loading
+* Any time we call `setState`, the component will update itself, and will automatically call `componentDidUpdate()` after calling render
+* If we stop showing a component on the screen, the `componentWillUnmount()` method will be called, good for cleanup
+* Other rare methods: `shouldComponentUpdate`, `getDerivedStateFromProps`, `getSnapshotBeforeUpdate`
+* Refactor: move the `window.navigator..` code into `componentDidMount()`
+* Alternate state initialization, can simply write the following instead of defining the constructor function:
+```
+state = { lat: null, errorMessage: '' };
+```
+* Can use the babel live interpreter to see how the line above compiles into the same code as with the constructor
+* Passing State as Props: can render a component and pass the current component's state variable to props:
+```
+return <SeasonDisplay lat={this.state.lat} />
+```
+* Ternary Expressions in JSX: can put any JS expression in braces `{}`:
+```
+<div><h1>{season === 'winter' ? 'Burr, it's chilly' : 'Lets hit the beach'}</h1></div>
+```
+* Divisive in community if you should put this much logic inside your embedded JS, could also make a helper var
 
