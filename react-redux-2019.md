@@ -53,7 +53,7 @@ return (
 );
 ```
 * JSX vs HTML
-  * Adding custom styling to an element differs: 
+  * Adding custom styling to an element differs:
     * HTML: `<div style="background-color: red':></div>`
     * JSX: `<div style={{backgroundColor:'red'}}></div>`, represents properties with a JS object
   * With compound property names, remove the dashes and instead use camelCase
@@ -126,7 +126,7 @@ const CommentDetail = (props) => {
 </ApprovalCard>
 ```
 
-### Structuring Apps with Class-Based Components 
+### Structuring Apps with Class-Based Components
 * Functional components: good for simple content without a lot of logic behind it
 * Class components: good for just about anything else - complex logic, responding to user inputs, network requests
 * Benefits of class components:
@@ -143,19 +143,19 @@ window.navigator.geolocation.getCurrentPosition(
   (err) => console.log(err)
 );
 ```
-* Application timeline: 
+* Application timeline:
   * JS file loaded by browser
   * App component gets created
   * We call geolocation service
-  * App returns JSX, gets rendered to page as HTML 
-  * ... 
+  * App returns JSX, gets rendered to page as HTML
+  * ...
   * We get result of geolocation!
 * Getting geolocation result back takes some time
 * We see content appear on the screen far sooner than when we get a result from the geolocation API
 * Want to tell component to rerender itself with new information
 * Rules of Class-based Components:
   * Must be a Javascript Class
-  * Must extend (subclass) React.Component 
+  * Must extend (subclass) React.Component
   * Must define a 'render' method that returns some amount of JSX
 ```
 class App extends React.Component {
@@ -227,4 +227,50 @@ return <SeasonDisplay lat={this.state.lat} />
 <div><h1>{season === 'winter' ? 'Burr, it's chilly' : 'Lets hit the beach'}</h1></div>
 ```
 * Divisive in community if you should put this much logic inside your embedded JS, could also make a helper var
+* Configuration objects: create a nested hash holding all the relevant text/icons/etc to switch between:
+```
+const seasonConfig = {
+  summer: {
+    text: "Let's hit the beach!",
+    iconName: 'sun'
+  },
+  winter: {
+    text: 'Burr it is cold!',
+    iconName: 'snowflake'
+  }
+};
+```
+* With this, we can replace duplicate ternary expressions with a simple `seasonConfig[season]`, and all information now only exists in one place
+* If a css file is meant only to modify a certain component or js file, name it the same for association, then import into main file
+* Loading animations can be used when waiting on asynchronous requests
+* Separate functional component `Spinner` that can be reused anywhere, import in `index.js`, set as fallback until something else is displayed
+* Specifying default props: on the component itself, you can specify:
+```
+Spinner.defaultProps = {
+  message: 'Loading...'
+};
 
+export default Spinner;
+```
+* If you have conditionals in your component's render function but always want something included, you'd need to put it in each conditional! Bad!
+* Create helper function `renderContent()` and call that in the render method with the universal things applied:
+```
+return (
+  <div className="border red">
+    {this.renderContent()}
+  </div>
+);
+```
+* Traditionally, the config objects and helper functions are on top, with the component at the bottom
+
+### Handling User Input with Forms and Events
+* Generate new react application with `create-react-app pics`, start it up with `npm start`
+* Project structure: make a separate components folder to store components
+
+### Making API Requests with React
+
+### Building Lists of Records
+
+## Redux
+
+## More
