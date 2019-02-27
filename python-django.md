@@ -19,11 +19,11 @@ print(mystring[0])
 print(mystring[2:5])
 ```
 * Slicing notation starts at 2, but only goes _up to_ 5, not including it!
-* Step size: to skip every other character in string do 
+* Step size: to skip every other character in string do
 ```
 print(mystring[::2])
 ```
-* Strings are immutable, can't redefine certain indexes, can just redefine the entire variable 
+* Strings are immutable, can't redefine certain indexes, can just redefine the entire variable
 * Can use `.upper()` and `.lower()` to set case of entire string, many other methods like `.capitalize()`
 * Can use the `.split()` method to split each individual word on spaces into a list:
 * Can specify the particular character to split on:
@@ -47,7 +47,7 @@ mylist = ['big',1,'boi',2,'swag']
 ```
 mylist.extend(['x','y','z'])
 ```
-* Use `.pop()` to pop off the last element of the list and return that item, can also specify the index 
+* Use `.pop()` to pop off the last element of the list and return that item, can also specify the index
 * Use `.reverse()` to reverse the elements of the list, no kidding! Can also use `.sort()`, etc
 * Use multiple indexes to get an element from a nested list: `list[2][1]`
 * List compregension:
@@ -65,8 +65,8 @@ mystuff['key'] = 'value'
 * Tuples: immutable lists, such as `(1,2,3)`, can mix data types, slicing indexing etc are same as lists
 * Sets: unordered collections of unique elements, adding multiple identical elements won't change it
 
-### Control Flow 
-* No type coercion in Python, `1 == "1"` will return false 
+### Control Flow
+* No type coercion in Python, `1 == "1"` will return false
 * Logical operators are `and` and `or`
 * Python stresses readability due to white space, not as much `{}`, control flow statements are keyword, statement, and `:`
 ```
@@ -106,7 +106,7 @@ x = [1,2,3,4]
 out = [num**2 for num in x]
 ```
 
-### Functions 
+### Functions
 * Functions are formatted in snake case, can assign parameters with default values:
 ```
 def my_func(param1='default'):
@@ -114,7 +114,7 @@ def my_func(param1='default'):
   THIS IS THE DOCSTRING
   """
   print("My first python function is {a}!).format(a=param1))
-  
+
 my_func("beast")
 ```
 * Python automatically checks for a docstring for the function, and will often display it when autocompleting depending on your IDE
@@ -122,7 +122,7 @@ my_func("beast")
 ```
 def add_num(num1,num2):
   if type(num1) == type(num2) == type(10):
-    return num1+num2 
+    return num1+num2
   else:
     return "We need INTS!!"
 ```
@@ -137,7 +137,7 @@ print(list(evens))
 print('x' in [1,2,3])
 ```
 
-### Scope 
+### Scope
 * Python scope follows the LEGB rule:
   * Local: names assigned in any way within a function, and not declared global in that function
   * Enclosing Function locals: names in the local scope of any and all enclosing functions, from inner to outer
@@ -171,7 +171,7 @@ class Dog(Animal):
 ```
 * Special Methods: always denoted with `__` on each side of method name, such as `__str__` for what to return when printing the object
 
-### Errors and Exceptions 
+### Errors and Exceptions
 * Opening files: first argument is file path, second is if reading, writing, or both:
 ```
 open("myfile.txt",'r')
@@ -191,8 +191,8 @@ else:
 ```
 * Can use a `finally` block that prints regardless of if there's an exception at the end of a try/except/finally statement
 
-### Regular Expressions 
-* Allow us to search for patterns in Python strings, imported as `re` 
+### Regular Expressions
+* Allow us to search for patterns in Python strings, imported as `re`
 * `re.search(pattern,text)`: pass in the pattern you're looking for and the text to parse through, returns match object
 * Match object holds the starting index of where the pattern is found, `match.start()`
 * `re.split(split_term,email))`: used to split a string into a list on a particular pattern, such as `@`
@@ -206,7 +206,7 @@ else:
 * `[a-z]+` and `[A-Z]+` represents sequences of lower case or upper case characters
 * `[r'\d+']` represents a sequence of digits, `[r'\D+']` represents a sequence of non-digits, `\s` is whitespace and `\S` is non-whitespace, `\w` is alphanumeric, `\W` is non-alphanumeric
 
-### Modules and Packages 
+### Modules and Packages
 * Can save a file with functions, and reference it as a module with `import file_name`, then call `filename.func_in_module()`
 * This will generate a `_pycache_` folder, as the interpreter compiles code you run to bytecode and stores it there as `pyc` files
 * Can rename a module with `import mymodule as mm`
@@ -220,7 +220,7 @@ else:
 ```
 def hello():
   return "Hi Nathan!"
-  
+
  def other(func):
   print("Hello!")
   print(func())
@@ -237,7 +237,7 @@ def new_decorator(func):
 @new_decorator
 def func_needs_decorator():
   print("THIS FUNCTION NEEDS A DECORATOR!")
-  
+
 func_needs_decorator()
 > CODE HERE BEFORE EXECUTING FUNC
 > THIS FUNCTION NEEDS A DECORATOR!
@@ -259,3 +259,33 @@ else:
   * This goes to `urls.py` file, which calls `views.py` file
   * This calls `models.py`, which interacts with database and feeds back to `views.py`
   * views.py uses html/css/js templates to fill out view, then sent back to use
+* Django is a free and open source web framework, used by many sites including Pinterest, Instagram, etc
+* Django originated in 2003 at the Lawrence Journal-World newspaper, good documentation is a key part, with great references
+* Virtual environment: venv, packages change and get updated often, can break backwards compatibility, Anaconda includes its own virtual environment handler
+```
+conda create --name myEnv django
+activate myEnv
+```
+* Anything installed with pip or conda when this environment is activated will only be installed for this environment
+* Can specify the python version you want in your environment:
+```
+conda create --name myDjangoEnv python=3.5
+```
+* Can activate/deactivate environment with `de/activate MyDjangoEnv`
+* Can list all environments on your computer with
+```
+conda info --envs
+```
+* To create a Django project:
+```
+django-admin startproject first_project
+```
+* `__init__.py`: blank python script that due to its special name lets python know this directory can be treated as a package
+* `settings.py`: where you will store all project settings
+* `urls.py`: script that stores all URL patterns for your project, like different pages of web application
+* `wsgi.py`: python script that acts as the Web Server Gateway Interface, helps deploy app to production
+* To start up a server from your django project:
+```
+python manage.py runserver
+```
+* Migration: allows you to move databases from one design to another, also reversible
