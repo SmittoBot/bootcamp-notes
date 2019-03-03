@@ -271,7 +271,7 @@ activate myEnv
 ```
 conda create --name myDjangoEnv python=3.5
 ```
-* Can activate/deactivate environment with `de/activate MyDjangoEnv`
+* Can activate/deactivate environment with `source de/activate MyDjangoEnv`
 * Can list all environments on your computer with
 ```
 conda info --envs
@@ -289,3 +289,54 @@ django-admin startproject first_project
 python manage.py runserver
 ```
 * Migration: allows you to move databases from one design to another, also reversible
+* Django project is a collection of applications and configurations that when combined make up the full web application
+* A Django Application is created to perform a particular functionality, which can be plugged into other Django projects
+* To create a new application in the project:
+```
+python manage.py startapp first_app
+```
+* `admin.py`: you can register your models here which Django will then use with Django's admin interface
+* `apps.py`: here you can place application specific configurations
+* `models.py`: here you store the application's data models
+* `tests.py`: here you can store test functions to test your code
+* `views.py`: where you have functions that handle requests and return responses
+* Migrations folder: stores database specific information as it relates to the models
+* To add a new app to your project, list it under `INSTALLED_APPS` in the `settings.py` file
+* The `include()` function allows us to look for a match with regular expressions and link back to our application's own urls.py file, which is manually created
+* This would allow us to look for any url that has the pattern `www.domainname.com/first_app/...`
+```
+re_path(r'^first_app/', include('first_app.urls')),
+```
+* App templates are placed in `project_name/templates/app_name`, and templates are added to the DIR key in the templates dictionary in the `settings.py` file
+* We can use Python's `os` module to dynamically generate the correct file path strings, regardless of computer
+```
+TEMPLATE_DIR = os.path.join(BASE_DIR,"templates")
+...
+'DIRS': [TEMPLATE_DIR],
+```
+* With `{insert_me}` in the first app's `index.html` file, render it in first app's `views.py` with:
+```
+my_dict = {'insert_me': "Hey, I'm from first_app/index.html"}
+return render(request,'first_app/index.html',context=my_dict)
+```
+* Static files: first, create a file path variable in `settings.py`, like with templates:
+```
+STATIC_DIR = os.path.join(BASE_DIR,"static")
+```
+and at the bottom of the file, add
+```
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
+```
+* After placing a file in `static/images/`, you can now see it in `base_url/static/images/name.jpg`
+* In template, add the following to render image on page:
+```
+{% load staticfiles %}
+...
+<img src="{% static "images/krabs.jpg" %}" alt="you're a krusty krab">
+```
+* Static files can be anything that doesn't change, also CSS etc!
+
+### Django Level 2
