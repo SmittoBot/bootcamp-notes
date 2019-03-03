@@ -266,8 +266,131 @@ return (
 ### Handling User Input with Forms and Events
 * Generate new react application with `create-react-app pics`, start it up with `npm start`
 * Project structure: make a separate components folder to store components
+* When we pass a method as a prop to another component, we do not put `()` at the end as that will evaluate the function when we pass it
+```
+<input type="text" onChange={this.onInputChange} />
+```
+* `onClick`, `onChange`, and `onSubmit` are callback functions that are automatically invoked in inputs/forms/etc, dependent on the element type
+* Naming convention with event handlers is "on" + "element type" + "event type", "handle" is also popular
+* Single line functions are often condensed in the return statement:
+```
+<input type="text" onChange={e => console.log(e.target.value)} />
+```
+* Controlled element search bar flow:
+  * User types in input
+  * Callback gets invoked
+  * We call setState with the new value
+  * Component rerenders
+  * Input is told what its value is (coming from state)
+```
+<input type="text"
+  value={this.state.term}
+  onChange={e => this.setState({ term: e.target.value })}
+/>
+```
+* Before refactoring controlled, the only way to find the input value right now was reaching into the DOM and pulling the value from the `input` element
+* After refactoring, we can just refer to the current state, never need to look into the DOM
+* With the controlled method, we can also apply changes to the user input in real time, ie:
+```
+this.setState({ term: e.target.value.toUpperCase() })
+```
+* Form submittal: make an `onFormSubmit(event)` method and pass that into the form's `onSubmit` attribute
+* To stop the form submitting from automatically refreshing the page, use `event.preventDefault()`
+* The following code results in `TypeError: Cannot read property 'state' of undefined`:
+```
+onFormSubmit(event) {
+  event.preventDefault();
+  console.log(this.state.term);
+}
+...
+<form onSubmit={this.onFormSubmit} ... >
+```
+* `this` is a reference back to the instance of the class itself, which we can use to get reference to state, render, onFormSubmit, etc
+* To determine what `this` in a function refers to, look to where it's called, and look what's left of the `.`, don't look at the function, look at where the function gets called
+```
+class Car {
+  setDriveSound(sound) {
+    this.sound = sound;
+  }
+
+  drive() {
+    return this.sound;
+  }
+}
+
+const car = new Car();
+car.setDriveSound('vroom');
+
+const drive = car.drive;
+drive();
+```
+* The code above will result in `Cannot read property 'sound' of undefined`, because we pulled it off of its `this` reference. This is exactly what happens in react!
+* One way to fix this is adding a constructor function to our Car class, binding and overwriting the function :
+```
+constructor() {
+  this.drive = this.drive.bind(this);
+}
+```
+* Can also replace our function declaration with an arrow function:
+```
+onFormSubmit = (event) => {...};
+```
+* Can also pass an arrow function directly into the onChange prop:
+```
+<form onSubmit={(event) => this.onFormSubmit(event)} ... >
+```
+* When we use the arrow function here, it only gets called when the action occurs, so we have to now invoke the onFormSubmit function
+* Communicating from child to parent: define `onSearchSubmit(term)` in parent component, and pass as a prop into the `SearchBar` component. This way, the `App` component knows when the user searches, and can execute a new function in response
+* In a class-based component, we reference the props object with `this.props`
 
 ### Making API Requests with React
+* When user enters a search, we want to make an `Ajax`, or network request to the Unsplash API
+* Axios: standalone 3rd party package that can be installed with npm
+* Fetch: singular function built into modern browsers, far more basic and lower
+* By convention, put imports for third party packages and dependencies above imports for files you've created
+* With `axios.get`, enter arguments for the request url and the special configurations to pass in
+```
+axios.get('https://api.unsplash.com/search/photos', {
+  params: { query: term },
+  headers: {
+    Authorization: '...',    
+  }
+});
+```
+* To view results for your request, can go to  Network > All > Preview, where the returned json/xml can be viewed
+* Network requests are asynchronous, takes some time to get a response, after we've already exited the method that called it
+* Whenever we make a request with Axios, it returns an object called a promise, giving a notification when something is completed. Use a `.then()` function chained onto `axios.get()` that is called after the response is returned
+```
+axios
+  .get('...', {
+    ...
+  })
+  .then(response => {
+    console.log(response.data.results);
+  });
+}
+```
+* Alternate method: mark a function as async, allows us to use await:
+```
+async onSearchSubmit(term) {
+  const response = await axios
+    .get('...', {...});
+}
+console.log(response.data.results);
+```
+* With await, whatever gets returned by the axios request is assigned to a variable that we can use later on
+* If you call `this.props.onSubmit()`, the value of `this` in the onSubmit method will be referring to `props`, not the component that called it! Need to call `this.props.onSubmit.bind(this)` or one of the other 2 solutions listed above
+* Creating custom clients: make a separate file that has the preconfigured settings:
+```
+import axios from 'axios';
+export default axios.create({
+  baseURL: 'https://api.unsplash.com',
+  headers: {
+    Authorization: 'Client-ID ...'
+  }
+});
+```
+* Now can just `import unsplash from '../api/unsplash'` and make a request to `unsplash.get()`
 
 ### Building Lists of Records
 
