@@ -393,6 +393,25 @@ export default axios.create({
 * Now can just `import unsplash from '../api/unsplash'` and make a request to `unsplash.get()`
 
 ### Building Lists of Records
+* JS Map Statements: iterate over an array, modify each value, and return a brand new array
+* Can be used to replace this 
+```
+for (let i = 0; i < numbers.length; i++) {
+  newNumbers.push(numbers[i] * 10);
+}
+```
+with this
+```
+numbers.map((num) => num * 10);
+```
+* Can use mapping to return a list of components or elements:
+```
+const images = props.images.map((image) => {
+  return <img src={image.urls.regular} />
+});
+
+return <div>{images}</div>
+```
 
 ## Redux
 
