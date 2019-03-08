@@ -412,7 +412,68 @@ const images = props.images.map((image) => {
 
 return <div>{images}</div>
 ```
+* Need to add a `key` prop to each element in a list, helps react render lists and updates to lists more performantly 
 
 ## Redux
+* Redux: state management library, makes creating complex applications easier, not required to create a React app
+* Redux cycle: Action Creator > Action > Dispatch > Reducers > State
+* Insurance company: Person dropping off the form > the form > for receiver > departments > compiled department data
+* Analogy of a central repository of data that different departments can source from and edit
+* Action creator example:
+```
+const createPolicy = (name, amount) => {
+  return {
+    type: 'CREATE_POLICY',
+    payload: {
+      name: name,
+      amount: amount
+    }
+  };
+};
+```
+* Reducer example:
+```
+const policies = (listOfPolicies = [], action) => {
+  if (action.type === 'CREATE_POLICY') {
+    return [...listOfPolicies, action.payload.name];
+  } else if (action.type === 'DELETE_POLICY') {
+    return listOfPolicies.filter(name => name !== action.payload.name);
+  }
+  return oldListOfClaims;
+};
+```
+* Any time we want to change something inside of a reducer, we ALWAYS want to return a NEW object, instead of modifying an existing one
+* `...` example:
+```
+const numbers = [1,2,3]
+[...numbers, 4]
+> [1,2,3,4]
+```
+* Creating a Redux store:
+```
+const {createStore, combineReducers } = Redux;
+
+const ourDepartments = combineReducers({
+  accounting: accounting,
+  claimsHistory: claimsHistory,
+  policies: policies
+});
+
+const store = createStore(ourDepartments);
+const action = createPolicy('Alex', 20);
+store.dispatch(action);
+```
+* Redux Cycle: to change the state of our app, we call an...
+  * Action Creator, which produces an
+  * Action, which gets fed to
+  * Dispatch, which forwards the action to
+  * Reducerts, which create a new 
+  * State, then we wait until we need to update state again
+* Without redux, app complexity will tend to grow exponentially as its size increases
+* With redux, initial complexity is higher, but complexity growth is slower and more linear
 
 ## More
+### Handling Forms with Redux Form
+* Form data held inside Redux store, passed down with `mapStateToProps` and fed into the form values, with action creators to update store when form inputs are updated
+* Redux form does all of those things for us, as it's so repetitive and can be abstracted away
+* Wizard form: information is entered across different pages/series of fields, and is all accumulated into Redux store
