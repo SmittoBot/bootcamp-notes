@@ -467,7 +467,7 @@ store.dispatch(action);
   * Action Creator, which produces an
   * Action, which gets fed to
   * Dispatch, which forwards the action to
-  * Reducerts, which create a new 
+  * Reducers, which create a new 
   * State, then we wait until we need to update state again
 * Without redux, app complexity will tend to grow exponentially as its size increases
 * With redux, initial complexity is higher, but complexity growth is slower and more linear
@@ -477,3 +477,63 @@ store.dispatch(action);
 * Form data held inside Redux store, passed down with `mapStateToProps` and fed into the form values, with action creators to update store when form inputs are updated
 * Redux form does all of those things for us, as it's so repetitive and can be abstracted away
 * Wizard form: information is entered across different pages/series of fields, and is all accumulated into Redux store
+```
+import { reducer as formReducer } from 'redux-form';
+
+export default combineReducers({
+  auth: authReducer,
+  form: reducer
+});
+```
+* Exporting with a reduxForm helper adds a ton of props to our redux component for handling things
+* `Field` is a react component supplied by reduxForm, that automates the redux store updates
+* Field doesn't know anything about what it's rednering, and that must be supplied as the `component` prop, where we put a function that returns an HTML element that's wrapped by the field
+* We can use `input {...formProps.input}`, which passes in all the props of the formProps object and assigns them to the input element, such as onChange, value, etc.
+
+```
+renderInput({ input, label, meta }) {
+  return (
+    <div className="field">
+      <label>{label}</label>
+      <input {...formProps.input} autoComplete="off" />
+      <div>{meta.error}</div>
+    </div>
+  );
+}
+
+onSubmit(formValues) {
+  console.log(formValues);
+}
+
+render() {
+  return (
+    <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form">
+      <Field name="title" label="Enter Title component={this.renderInput} />
+      <Field name="description" label="Enter Description" component={this.renderInput} />
+    </form>
+  );
+}
+```
+* `handleSubmit`: a function we're supposed to call any time a form is submitted, provided by reduxForm
+* Form validation: want to check that title and description fields are filled in before submission is possible
+* If error, return an object, with each invalid field having a key-value pair with the name of the field and the error message
+```
+const validate = (formValues)  => {
+  const errors = {};
+  
+  if (!formValues.title) {
+    errors.title = 'You must enter a title';
+  }
+  
+  if (!formValues.description) {
+    errors.description = 'You must enter a description';
+  }
+  
+  return errors;
+};
+```
+* Validate is called every time the form is initially rendered or the user interacts with it in any way
+* If a field name lines up with a key in our errors object, that error message will be passed to the renderInput function
+* You can turn off autocompletion on an input element with `autoComplete="off"`
+* `meta.touched` attribute is a boolean that indicates if an element has been clicked on and then clicked off, can be used to determine if the error message should be shown after the user clicks off it
+
